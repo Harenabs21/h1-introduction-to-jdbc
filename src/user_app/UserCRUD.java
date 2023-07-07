@@ -4,24 +4,29 @@ import java.sql.*;
 import java.util.List;
 
 public class UserCRUD {
+    private static DatabaseSingleton database;
+
+    public UserCRUD() {
+        // Obtenez l'instance unique du singleton DatabaseSingleton
+        database = DatabaseSingleton.getInstance();
+    }
     // insert a user
     public static void insertUser(int id, String name, String email, String password){
-        /**
-         * Devoir : faites en sorte que le CRUD marche
-         * - Trouvez un moyen pour qu'on n'utilise plus qu'une SEULE instance de
-         * Connection, et une SEULE instance de Statement dans TOUTE l'application.
-         * Pour cela, regardez le DESIGN PATTERN : SINGLETON.
-         */
-    }
+        Statement statement = database.getStatement();
+        String sql = "INSERT INTO \"user\" VALUES (" + id + ", '" + name + "', '" + email + "', '" + password + "')";
+        try{
+            int rowsAffected = statement.executeUpdate(sql);
+            System.out.println(rowsAffected+" line affected");
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } 
 
     // find a single user by its id
     // en JPA vous auriez juste écrit : public User findById(int id);
     public static User findUserById(int id){
-        ConnectionToDatabase db = new ConnectionToDatabase();
-        Connection connection = db.createConnection();
-
+        Statement statement = database.getStatement();
         try{
-            Statement statement = connection.createStatement();
             String sql = "SELECT * FROM \"user\" WHERE id = "+id;
             ResultSet resultSet = statement.executeQuery(sql);
 
