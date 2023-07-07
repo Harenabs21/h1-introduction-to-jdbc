@@ -4,12 +4,7 @@ import java.sql.*;
 import java.util.List;
 
 public class UserCRUD {
-    private static DatabaseSingleton database;
-
-    public UserCRUD() {
-        // Obtenez l'instance unique du singleton DatabaseSingleton
-        database = DatabaseSingleton.getInstance();
-    }
+     private static DatabaseSingleton database = DatabaseSingleton.getInstance();
     // insert a user
     public static void insertUser(int id, String name, String email, String password){
         Statement statement = database.getStatement();
